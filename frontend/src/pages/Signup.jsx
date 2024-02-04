@@ -5,14 +5,13 @@ import { Heading } from "../components/Heading"
 import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
 
 export const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+
   const handleLocal=(token)=>{
     localStorage.setItem("token",token)
   }
@@ -43,8 +42,6 @@ export const Signup = () => {
               password
             }).then((response) => {
                handleLocal(response.data.token)
-              // navigate("/dashboard")
-              // setTimeout(()=>{window.location.reload(true);},1000)
               window.location.reload(true)
               
             }).catch(error => {

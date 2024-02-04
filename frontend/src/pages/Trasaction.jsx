@@ -25,7 +25,7 @@ export const TransactionList = ({ user }) => {
     return (<>
         {!loading && <div className="flex justify-center items-center mt-10">
             <div className="max-w-full  w-full bg-white p-4 rounded-lg shadow-md overflow-y-auto">
-                {transactions.map((transaction, index) => {
+                {transactions.length > 0 ? transactions.map((transaction, index) => {
                     return (<div key={index} className="bg-white shadow-md rounded-lg mb-4 p-4 sm:flex justify-between items-center">
                         {/* For larger devices */}
                         <div className="hidden sm:flex sm:justify-between sm:items-center sm:flex-1">
@@ -53,16 +53,13 @@ export const TransactionList = ({ user }) => {
                             </div>
                         </div>
                     </div>)
-                })}
+                }) : <><h1>No Records found</h1></>}
             </div>
         </div>}
     </>
     );
 };
 
-TransactionList.propType = ({
-    user: PropTypes.object
-})
 
 
 

@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 export const Appbar = ({ user, setProfile, isProfile }) => {
     // const navigate = useNavigate();
     const handleClick = () => {
