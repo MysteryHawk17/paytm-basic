@@ -16,7 +16,7 @@ const PaymentSuccessful = () => {
         }).finally(()=>{setLoading(false)})
     },[location.search])
     return (<>
-        {!loading ? <div className="flex justify-center items-center h-screen  bg-cyan-300">
+        {!loading ? <div className="flex justify-center items-center h-screen  bg-slate-100">
             <div className="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
                 <div className="flex items-center justify-center mb-6">
                     <FaCheckCircle className="text-green-600 h-10 w-10 mr-4 text-sm"/>
