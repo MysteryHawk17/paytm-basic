@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Button } from "../components/Button"
 import { TransactionList } from "./Trasaction"
 import Profile from "./Profile"
-import Appbar from "../components/Appbar"
+import AppBar from '../components/AppBar'
 export const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [balance, setBalance] = useState(0);
@@ -40,7 +40,7 @@ export const Dashboard = () => {
     }
     return (<div>
         {loading == false &&
-            <> <Appbar user={user} setProfile={setIsProfile} isProfile={isProfile} />
+            <> <AppBar user={user} setProfile={setIsProfile} isProfile={isProfile} />
                 {!isProfile ? <div className="m-8">
                     <div className="flex justify-between ">
                         <div>

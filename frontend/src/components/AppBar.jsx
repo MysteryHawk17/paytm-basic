@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-const Appbar = ({ user, setProfile, isProfile }) => {
+const AppBar = ({ user, setProfile, isProfile }) => {
     // const navigate = useNavigate();
     const handleClick = () => {
         localStorage.removeItem("token")
@@ -30,7 +30,7 @@ const Appbar = ({ user, setProfile, isProfile }) => {
         </>
     )
 }
-Appbar.propTypes = {
+AppBar.propTypes = {
     user: PropTypes.shape({
         firstName: PropTypes.string,
         
@@ -38,4 +38,4 @@ Appbar.propTypes = {
     setProfile: PropTypes.func,
     isProfile: PropTypes.bool
 };
-export default Appbar
+export default AppBar
