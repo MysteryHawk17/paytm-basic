@@ -2,12 +2,15 @@ import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom"
+import { useTokenHook } from '../hooks/useTokenHook';
 export const SendMoney = () => {
   const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
   const [amount, setAmount] = useState(0);
   const navigate = useNavigate();
+  const isPresent = useTokenHook();
+  if (isPresent == false) { return }
+  const id = searchParams.get("id");
+  const name = searchParams.get("name");
   const handleClick = () => {
     axios.put(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/transfer`, {
       to: id,
@@ -18,7 +21,8 @@ export const SendMoney = () => {
       }
     }).then((response) => {
       console.log(response.data);
-      navigate(`/success?trasactionId=${response.data.info._id}`) }).catch((e) => {console.log(e.response); navigate(`/failure?reason=${e.response.data.message}`) })
+      navigate(`/success?trasactionId=${response.data.info._id}`)
+    }).catch((e) => { console.log(e.response); navigate(`/failure?reason=${e.response.data.message}`) })
   }
   return <div className="flex justify-center h-screen bg-gray-100">
     <div className="h-full flex flex-col justify-center">

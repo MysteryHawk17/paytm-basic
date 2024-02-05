@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import { useNavigate } from 'react-router-dom'
 import { Balance } from "../components/Balance"
 import { Users } from "../components/Users"
 import axios from 'axios'
@@ -13,6 +13,7 @@ export const Dashboard = () => {
     const [loading, setLoading] = useState(true);
     const [updateProfile, setUpdateProfile] = useState(false);
     const [isProfile, setIsProfile] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
         setLoading(true)
@@ -32,7 +33,8 @@ export const Dashboard = () => {
                     console.error("Error fetching users:", error);
                 }).finally(() => { setLoading(false); });
         }
-    }, [updateProfile])
+        else { navigate("/signin")}
+    }, [updateProfile,navigate])
     const [butValue, setValue] = useState("History");
     const changeValue = () => {
         const value = butValue == "History" ? "Users" : "History"
@@ -54,7 +56,7 @@ export const Dashboard = () => {
                     </div>
                     {butValue == "History" ? <Users /> :
                         <TransactionList user={user} />}
-                </div> : <Profile user={user} setUser={setUser}  setUpdateProfile={setUpdateProfile} updateProfile={updateProfile}/>}
+                </div> : <Profile user={user} setUser={setUser} setUpdateProfile={setUpdateProfile} updateProfile={updateProfile} />}
             </>}
     </div>)
 }

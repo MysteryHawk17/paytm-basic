@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { Button } from "../components/Button";
 import axios from 'axios'
+import { useTokenHook } from "../hooks/useTokenHook";
 const Profile = ({ user,updateProfile,setUpdateProfile }) => {
     const[info,setInfo]=useState(null);
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [loading, setLoading] = useState(false)
+    
     const handleUpdateProfile = () => {
         const token = localStorage.getItem('token');
         console.log(token);
@@ -87,5 +89,5 @@ const Profile = ({ user,updateProfile,setUpdateProfile }) => {
         </>
     );
 };
-
+    
 export default Profile;

@@ -4,8 +4,10 @@ import { Heading } from "../components/Heading"
 import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import axios from "axios";
+import {useNavigate}from 'react-router-dom'
 import { useState } from "react"
 export const Signin = () => {
+  const navigate=useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   return <div className="bg-slate-300 h-screen flex justify-center">
@@ -23,8 +25,8 @@ export const Signin = () => {
                 password
               }).then((response) => {
                 localStorage.setItem("token", response.data.token)
-                // setTimeout(()=>{navigate("/dashboard")},1000)
-                window.location.reload(true);
+                setTimeout(()=>{navigate("/dashboard")},1000)
+                // window.location.reload(true);
                 
               }).catch(error => {
                 console.error("Error User Signin", error);
