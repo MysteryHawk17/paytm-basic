@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
-import { Appbar } from "../components/Appbar"
+
 import { Balance } from "../components/Balance"
 import { Users } from "../components/Users"
 import axios from 'axios'
 import { Button } from "../components/Button"
 import { TransactionList } from "./Trasaction"
 import Profile from "./Profile"
+import Appbar from "../components/Appbar"
 export const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [balance, setBalance] = useState(0);

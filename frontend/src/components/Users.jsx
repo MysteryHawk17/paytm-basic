@@ -19,7 +19,7 @@ export const Users = () => {
                     Authorization: `Bearer ${token}`
                 }
             };
-            axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/user/search?filter=` + filter, config)
+            axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/user/search?filter=` + debouncedValue, config)
                 .then(response => {
                     setUsers(response.data.user);
                     setLoading(false)
@@ -67,7 +67,7 @@ function User({ user }) {
         </div>
 
         <div className="flex flex-col justify-center h-ful">
-            <Button onClick={(e) => {
+            <Button onClick={() => {
                 navigate("/send?id=" + user._id + "&name=" + user.firstName);
             }} label={"Send Money"} />
         </div>
@@ -86,6 +86,13 @@ const useDebounceHook = (value, n) => {
     }, [n, value])
     return retVal;
 }
-User.propType = ({
-    user: PropTypes.object
-})
+User.propTypes = {
+    user: PropTypes.shape({
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        _id: PropTypes.string,
+        // Add PropTypes validation for other properties in user if needed
+    }),
+    setProfile: PropTypes.func,
+    isProfile: PropTypes.bool
+};
