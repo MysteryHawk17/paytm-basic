@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 const AppBar = ({ user, setProfile, isProfile }) => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleClick = () => {
         localStorage.removeItem("token")
-        window.location.reload();
+        navigate("/signin");
         
     }
     return (
