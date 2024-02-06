@@ -19,7 +19,7 @@ function App() {
         />
         <Route
           path="/send"
-          element={<SendMoney />}//
+          element={<SendMoney />}
         />
         <Route
           path="/success"
@@ -31,7 +31,7 @@ function App() {
         />
         <Route
           path="/*"
-          element={<Navigate to="/dashboard" />}
+          element={<Navigate to="/dashboard" />}//
         />
       </Routes>
     </BrowserRouter>

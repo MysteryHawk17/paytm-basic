@@ -1,11 +1,16 @@
 
+import { useEffect } from "react";
 import { ImCross } from "react-icons/im";
-import { useLocation } from 'react-router-dom'
-import { useTokenHook } from "../hooks/useTokenHook";
+import { useLocation,useNavigate } from 'react-router-dom'
+
 const PaymentFailed = () => {
   const location = useLocation();
-  const isPresent = useTokenHook();
-  if (isPresent == false) { return }
+  const navigate=useNavigate();
+  useEffect(()=>{
+    const token=localStorage.getItem("token");
+    console.log(token);
+    if(token==undefined)navigate("/signin");
+  })
   const reason = decodeURIComponent(location.search.split("=")[1])
   return (
     <div className="flex justify-center items-center h-screen bg-cyan-300">

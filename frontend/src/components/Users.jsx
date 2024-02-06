@@ -3,13 +3,14 @@ import { Button } from "./Button"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types'
+import Loader from "../loader/Loader";
 
 export const Users = () => {
     // Replace with backend call
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState("");
     const [loading, setLoading] = useState(false);
-    const debouncedValue=useDebounceHook(filter,1)
+    const debouncedValue = useDebounceHook(filter, 1)
     useEffect(() => {
         setLoading(true);
         const token = localStorage.getItem('token');
@@ -33,7 +34,7 @@ export const Users = () => {
 
 
     return <>
-        
+        {loading ? <div className="relative lg:left-[30rem] sm:left-[22rem] top-[20rem] left-[8rem]"><Loader /></div>  :
             <><div className="font-bold mt-6 text-lg">
                 Users
             </div>
@@ -43,9 +44,9 @@ export const Users = () => {
                     }} type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"></input>
                 </div>
                 <div>
-                    {loading == false &&users.map((user, index) => <User key={index} user={user} />)}
+                    {loading == false && users.map((user, index) => <User key={index} user={user} />)}
                 </div>
-            </>
+            </>}
     </>
 }
 

@@ -7,11 +7,11 @@ import { Button } from "../components/Button"
 import { TransactionList } from "./Trasaction"
 import Profile from "./Profile"
 import AppBar from '../components/AppBar'
+import Loader from "../loader/Loader"
 export const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [updateProfile, setUpdateProfile] = useState(false);
     const [isProfile, setIsProfile] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
@@ -33,15 +33,15 @@ export const Dashboard = () => {
                     console.error("Error fetching users:", error);
                 }).finally(() => { setLoading(false); });
         }
-        else { navigate("/signin")}
-    }, [updateProfile,navigate])
+        else { navigate("/signin") }
+    }, [navigate])
     const [butValue, setValue] = useState("History");
     const changeValue = () => {
         const value = butValue == "History" ? "Users" : "History"
         setValue(value)
     }
     return (<div>
-        {loading == false &&
+        {loading ? <div className="relative lg:left-[30rem] sm:left-[22rem] top-[20rem] left-[8rem]"><Loader /></div> :
             <> <AppBar user={user} setProfile={setIsProfile} isProfile={isProfile} />
                 {!isProfile ? <div className="m-8">
                     <div className="flex justify-between ">
@@ -56,7 +56,7 @@ export const Dashboard = () => {
                     </div>
                     {butValue == "History" ? <Users /> :
                         <TransactionList user={user} />}
-                </div> : <Profile user={user} setUser={setUser} setUpdateProfile={setUpdateProfile} updateProfile={updateProfile} />}
+                </div> : <Profile user={user}/>}
             </>}
     </div>)
 }

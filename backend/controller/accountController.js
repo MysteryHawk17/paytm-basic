@@ -16,7 +16,7 @@ const transferFunds = async (req, res) => {
                 message: "Insufficient balance"
             });
         }
-        if(amount==0){
+        if (amount == 0) {
             await session.abortTransaction();
             return res.status(400).json({
                 message: "Invalid amount transfer"
@@ -30,7 +30,7 @@ const transferFunds = async (req, res) => {
                 message: "Invalid account"
             });
         }
-        
+
         await accountModel.updateOne({ userId: req.userId }, { $inc: { balance: -amount } }).session(session);
         await accountModel.updateOne({ userId: to }, { $inc: { balance: amount } }).session(session);
         const trasactionHistory = await transactionModel.create({ senderId: req.userId, receiverId: to, amount: amount })
@@ -78,7 +78,7 @@ const getHistory = async (req, res) => {
                 { senderId: userId },
                 { receiverId: userId }
             ]
-        }).populate("senderId").populate("receiverId").sort({createdAt:-1})
+        }).populate("senderId").populate("receiverId").sort({ createdAt: -1 })
         res.status(200).json({ message: "Trasactions fetched successfully", findTrasactions })
     } catch (error) {
         console.log(error);
@@ -87,20 +87,21 @@ const getHistory = async (req, res) => {
 }
 
 const getTrasaction = async (req, res) => {
+    const userId = req.userId;
     const id = req.params.id;
     if (id == ":id") {
         return res.status(400).json({ message: "Invalid parameter" })
     }
     try {
-        const findTrasaction = await transactionModel.findById({ _id: id }).populate("senderId").populate("receiverId");
+        const findTrasaction = await transactionModel.findOne({ _id: id,$or:[{senderId:userId},{receiverId:userId}] }).populate("senderId").populate("receiverId");
         const utcDate = new Date(findTrasaction.createdAt);
 
         // Get local time in ISO format
         const localTimeString = utcDate.toLocaleString();
 
         console.log(localTimeString);
-        const info = { receiver: findTrasaction.receiverId.username, amount: findTrasaction.amount, time:localTimeString}
-        return res.status(200).json({ message: "Successful", info:info});
+        const info = { receiver: findTrasaction.receiverId.username, amount: findTrasaction.amount, time: localTimeString }
+        return res.status(200).json({ message: "Successful", info: info });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error in fetching tra" })

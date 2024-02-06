@@ -2,8 +2,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios'
-import { useTokenHook } from "../hooks/useTokenHook";
 import { useNavigate } from 'react-router-dom'
+import Loader from "../loader/Loader";
 const PaymentSuccessful = () => {
     const [info, setInfo] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -11,18 +11,23 @@ const PaymentSuccessful = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+            setLoading(true)
+            axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/trasaction/${location.search.split("=")[1]}`, null, config).then((e) => {
 
-        setLoading(true)
-        axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/trasaction/${location.search.split("=")[1]}`).then((e) => {
+                setInfo(e.data.info);
+            }).catch((e) => {
+                console.log(e);
 
-            setInfo(e.data.info);
-        }).catch((e) => {
-            console.log(e);
-
-        }).finally(() => { setLoading(false) })
+            }).finally(() => { setLoading(false) })
+        }else(navigate("/signin"))
     }, [location.search])
-    const isPresent = useTokenHook();
-    if (isPresent == false) { return }
     setTimeout(() => { navigate("/dashboard") }, 30000);
     return (<>
         {!loading ? <div className="flex justify-center items-center h-screen  bg-slate-100">
@@ -37,7 +42,7 @@ const PaymentSuccessful = () => {
                     <p className="text-gray-700">Date & Time: {info?.time}</p>
                 </div>
             </div>
-        </div> : <><div className='flex justify-center items-center h-screen'>Loading...</div></>}
+        </div> : <div className="relative lg:left-[30rem] sm:left-[22rem] top-[20rem] left-[8rem]"><Loader /></div>}
     </>
     );
 };

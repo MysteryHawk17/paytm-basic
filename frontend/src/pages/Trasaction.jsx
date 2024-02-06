@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import PropTypes from 'prop-types';
+import Loader from "../loader/Loader";
 export const TransactionList = ({ user }) => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -23,7 +24,9 @@ export const TransactionList = ({ user }) => {
         }
     }, [])
     return (<>
-        {!loading && <div className="flex justify-center items-center mt-10">
+        {loading ?<div className="relative lg:left-[30rem] sm:left-[22rem] top-[20rem] left-[8rem]"><Loader/></div>:
+        <>
+         <div className="flex justify-center items-center mt-10">
             <div className="max-w-full  w-full bg-white p-4 rounded-lg shadow-md overflow-y-auto">
                 {transactions.length > 0 ? transactions.map((transaction, index) => {
                     return (<div key={index} className="bg-white shadow-md rounded-lg mb-4 p-4 sm:flex justify-between items-center">
@@ -55,7 +58,7 @@ export const TransactionList = ({ user }) => {
                     </div>)
                 }) : <><h1>No Records found</h1></>}
             </div>
-        </div>}
+        </div></>}
     </>
     );
 };

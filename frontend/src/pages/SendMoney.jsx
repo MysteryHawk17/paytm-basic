@@ -1,16 +1,26 @@
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
-import { useState } from 'react';
+import {  useState,useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
-import { useTokenHook } from '../hooks/useTokenHook';
 export const SendMoney = () => {
-  const [searchParams] = useSearchParams();
-  const [amount, setAmount] = useState(0);
   const navigate = useNavigate();
-  const isPresent = useTokenHook();
-  if (isPresent == false) { return }
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
+  useEffect(()=>{
+    
+    const token=localStorage.getItem("token");
+    console.log(token);
+    if(token==undefined)
+    {
+      navigate("/signin");
+      return;
+    }
+
+  })
+  const [searchParams] = useSearchParams();
+
+  const [amount, setAmount] = useState(0);
+  const id = searchParams.size!==0&&searchParams.get("id");
+  const name = searchParams.size!==0&&searchParams.get("name");
+
   const handleClick = () => {
     axios.put(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/transfer`, {
       to: id,
@@ -35,7 +45,7 @@ export const SendMoney = () => {
         <div className="p-6">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-              <span className="text-2xl text-white">{name[0].toUpperCase()}</span>
+              <span className="text-2xl text-white">{name[0]?.toUpperCase()}</span>
             </div>
             <h3 className="text-2xl font-semibold">{name}</h3>
           </div>

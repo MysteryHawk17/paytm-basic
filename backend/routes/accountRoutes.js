@@ -5,5 +5,5 @@ const router = require("express").Router();
 router.put('/transfer', authMiddleware, transferFunds);
 router.get('/getbalance', authMiddleware, getUserBalance);
 router.get("/transactionhistory", authMiddleware, getHistory);
-router.get("/trasaction/:id", getTrasaction);
+router.get("/trasaction/:id",authMiddleware, getTrasaction);
 module.exports = router;

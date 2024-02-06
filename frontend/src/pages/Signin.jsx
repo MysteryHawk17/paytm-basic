@@ -25,8 +25,8 @@ export const Signin = () => {
                 password
               }).then((response) => {
                 localStorage.setItem("token", response.data.token)
-                setTimeout(()=>{navigate("/dashboard")},1000)
-                // window.location.reload(true);
+                navigate("/dashboard")
+                // setTimeout(()=>{navigate("/dashboard")},1000)
                 
               }).catch(error => {
                 console.error("Error User Signin", error);
