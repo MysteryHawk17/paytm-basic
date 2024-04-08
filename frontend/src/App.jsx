@@ -5,6 +5,7 @@ import { Dashboard } from "./pages/Dashboard"
 import { SendMoney } from "./pages/SendMoney"
 import PaymentSuccessful from "./components/Successful";
 import PaymentFailed from "./components/PaymentFailed";
+import { AddMoney } from "./pages/AddMoney";
 function App() {
   return (
     <BrowserRouter>
@@ -22,7 +23,12 @@ function App() {
           element={<SendMoney />}
         />
         <Route
+          path="/addmoney"
+          element={<AddMoney />}
+        />
+        <Route
           path="/success"
+          // element={<ShareComponent />}//
           element={<PaymentSuccessful />}//
         />
         <Route
