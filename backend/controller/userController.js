@@ -33,7 +33,7 @@ const register = async (req, res) => {
         const savedUser = await newUser.save();
         await accountModel.create({
             userId: savedUser._id,
-            balance: 1 + Math.random() * 10000
+            balance: 0
         })
         const token = jwtSign({ id: savedUser._id });
         return res.status(200).json({ message: "User created successfully", token: token })

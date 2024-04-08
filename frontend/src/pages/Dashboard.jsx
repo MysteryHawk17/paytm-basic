@@ -15,6 +15,7 @@ export const Dashboard = () => {
     const [isProfile, setIsProfile] = useState(false);
     const [sent, setSent] = useState(0);
     const [received, setReceived] = useState(0);
+    const[added,setAdded]=useState(0)
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,17 +28,19 @@ export const Dashboard = () => {
             };
             axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/getbalance`, config)
                 .then(response => {
-                    console.log(response.data.info);
+                    // console.log(response.data.info);
                     setUser(response.data.info.userId);
                     setBalance(response.data.info.balance)
                 })
                 .catch(error => {
                     console.error("Error fetching users:", error);
                 }).finally(() => { setLoading(false); });
-            axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/diffbalance`, config).then(response => {
+            setLoading(true);
+            axios.get(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/difftransaction`, config).then(response => {
                 console.log(response.data);
-                setSent(response.data.info.sent);
+                setSent(response.data.info.spent);
                 setReceived(response.data.info.received);
+                setAdded(response.data.info.moneyAdded)
             })
                 .catch(error => {
                     console.error("Error fetching users:", error);
@@ -63,7 +66,7 @@ export const Dashboard = () => {
                         </div>
                     </div>
 
-                    <Balance value={balance} sent={sent} received={received} />
+                    <Balance value={balance} sent={sent} received={received} added={added}/>
 
                     {butValue == "History" ? <Users /> :
                         <TransactionList user={user} />}
