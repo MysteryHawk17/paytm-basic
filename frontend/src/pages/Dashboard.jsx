@@ -8,14 +8,16 @@ import { TransactionList } from "./Trasaction"
 import Profile from "./Profile"
 import AppBar from '../components/AppBar'
 import Loader from "../loader/Loader"
+
 export const Dashboard = () => {
     const [user, setUser] = useState(null);
+
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(true);
     const [isProfile, setIsProfile] = useState(false);
     const [sent, setSent] = useState(0);
     const [received, setReceived] = useState(0);
-    const[added,setAdded]=useState(0)
+    const [added, setAdded] = useState(0)
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -30,7 +32,11 @@ export const Dashboard = () => {
                 .then(response => {
                     // console.log(response.data.info);
                     setUser(response.data.info.userId);
+                    console.log(response.data.info.isPinSet);
                     setBalance(response.data.info.balance)
+                    if(response.data.info.isPinSet === false){
+                        navigate("/setpin")
+                    }
                 })
                 .catch(error => {
                     console.error("Error fetching users:", error);
@@ -66,7 +72,7 @@ export const Dashboard = () => {
                         </div>
                     </div>
 
-                    <Balance value={balance} sent={sent} received={received} added={added}/>
+                    <Balance value={balance} sent={sent} received={received} added={added} />
 
                     {butValue == "History" ? <Users /> :
                         <TransactionList user={user} />}

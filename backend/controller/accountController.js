@@ -4,7 +4,7 @@ const transactionModel = require("../models/transactionModel");
 
 const transferFunds = async (req, res) => {
     const session = await mongoose.startSession();
-    const { amount, to } = req.body;
+    const { amount, to ,pin} = req.body;
     try {
         session.startTransaction();
 
@@ -16,8 +16,16 @@ const transferFunds = async (req, res) => {
                 message: "Insufficient balance"
             });
         }
+        if(account.isPinSet===true&&account.pin!==parseInt(pin)){
+            await session.abortTransaction();
+            console.log("Invalid pin");
+            return res.status(400).json({
+                message: "Invalid pin"
+            });
+        }
         if (amount == 0) {
             await session.abortTransaction();
+            
             return res.status(400).json({
                 message: "Invalid amount transfer"
             });
@@ -153,9 +161,6 @@ const getDiffTrasaction = async (req, res) => {
         const moneyAddedTransactions = await transactionModel.find({ senderId: userId, receiverId: userId });
         sentTransactions=sentTransactions.filter(trasaction=>trasaction.senderId!==trasaction.receiverId);
         receivedTransactions=receivedTransactions.filter(trasaction=>trasaction.senderId!==trasaction.receiverId);
-        console.log(sentTransactions);
-        console.log("---------------------");
-        console.log(receivedTransactions);
         const spentAmount=sentTransactions.reduce((acc,curr)=>acc+curr.amount,0);
         const receivedAmount=receivedTransactions.reduce((acc,curr)=>acc+curr.amount,0);
         const moneyAddedAmount=moneyAddedTransactions.reduce((acc,curr)=>acc+curr.amount,0);
@@ -167,4 +172,35 @@ const getDiffTrasaction = async (req, res) => {
         res.status(500).json({message:"Error in fetching tra"})
     }
 }
-module.exports = { transferFunds, getUserBalance, getHistory, getTrasaction ,addMoney,getDiffTrasaction};
+
+const updatePin=async(req,res)=>{
+    const userId=req.userId;
+    let {oldPin,newPin}=req.body;
+    console.log(req.body);
+    console.log("HEHEHEHEHE");
+    oldPin=parseInt(oldPin);
+    newPin=parseInt(newPin);
+    try{
+        const account=await accountModel.findOne({userId:userId});
+        console.log(account);
+        console.log(oldPin);
+        console.log(account.pin);
+        console.log(newPin);
+        if(account.pin!==oldPin&&account.isPinSet===true){
+            return res.status(400).json({message:"Invalid pin"});
+        }
+        const updatedObj={
+            pin:newPin,
+            isPinSet:true
+        }
+        const updatedUser=await accountModel.findOneAndUpdate({userId:userId},updatedObj,{new:true});
+        console.log("HEHEHEHEHE2");
+        console.log(updatedUser);
+        return res.status(200).json({message:"Pin updated successfully"});
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({message:"Error in updating pin"});
+    }
+}
+module.exports = { transferFunds, getUserBalance, getHistory, getTrasaction ,addMoney,getDiffTrasaction,updatePin};

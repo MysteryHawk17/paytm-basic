@@ -1,15 +1,14 @@
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
-import {  useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 export const SendMoney = () => {
   const navigate = useNavigate();
-  useEffect(()=>{
-    
-    const token=localStorage.getItem("token");
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
     console.log(token);
-    if(token==undefined)
-    {
+    if (token == undefined) {
       navigate("/signin");
       return;
     }
@@ -18,13 +17,15 @@ export const SendMoney = () => {
   const [searchParams] = useSearchParams();
 
   const [amount, setAmount] = useState(0);
-  const id = searchParams.size!==0&&searchParams.get("id");
-  const name = searchParams.size!==0&&searchParams.get("name");
+  const [pin, setPin] = useState(0);
+  const id = searchParams.size !== 0 && searchParams.get("id");
+  const name = searchParams.size !== 0 && searchParams.get("name");
 
   const handleClick = () => {
     axios.put(`${import.meta.env.VITE_BACKENDURL}/api/v1/account/transfer`, {
       to: id,
-      amount
+      amount,
+      pin: pin
     }, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
@@ -65,6 +66,23 @@ export const SendMoney = () => {
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 id="amount"
                 placeholder="Enter amount"
+              />
+            </div>
+            <div className="space-y-2">
+              <label
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                htmlFor="pin"
+              >
+               Pin
+              </label>
+              <input
+                onChange={(e) => {
+                  setPin(e.target.value);
+                }}
+                type="number"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                id="pin"
+                placeholder="Enter pin"
               />
             </div>
             <button onClick={handleClick} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">

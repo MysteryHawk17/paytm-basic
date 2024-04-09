@@ -28,5 +28,6 @@ export const Balance = ({ value,sent,received,added }) => {
 Balance.propTypes = ({
     value: PropTypes.number,
     sent: PropTypes.number,
-    received: PropTypes.number
+    received: PropTypes.number,
+    added: PropTypes.number
 })

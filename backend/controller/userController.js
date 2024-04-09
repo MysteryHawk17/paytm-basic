@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { jwtSign } = require("../utils");
 const mongoose = require("mongoose");
 const accountModel = require("../models/bankModel");
+const sendEmail = require("../utils/nodemailer");
 //signup user
 const register = async (req, res) => {
     const { username, password, firstName, lastName } = req.body;
@@ -30,12 +31,16 @@ const register = async (req, res) => {
             lastName,
             password: hashedPassword
         })
+        
+        const otp=Math.floor(1000 + Math.random() * 9000);
         const savedUser = await newUser.save();
         await accountModel.create({
             userId: savedUser._id,
-            balance: 0
+            balance: 0,
+            pin:otp
         })
         const token = jwtSign({ id: savedUser._id });
+        await sendEmail("Welcome to the bank", `Welcome to the bank.Your default is ${otp}`, username, "projectpilot10@gmail.com","");
         return res.status(200).json({ message: "User created successfully", token: token })
     } catch (error) {
         console.log(error);

@@ -6,6 +6,7 @@ import { SendMoney } from "./pages/SendMoney"
 import PaymentSuccessful from "./components/Successful";
 import PaymentFailed from "./components/PaymentFailed";
 import { AddMoney } from "./pages/AddMoney";
+import SetPin from "./pages/SetPin";
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,10 @@ function App() {
         <Route
           path="/dashboard"
           element={<Dashboard />}//
+        />
+        <Route
+          path="/setpin"
+          element={<SetPin />}//
         />
         <Route
           path="/send"

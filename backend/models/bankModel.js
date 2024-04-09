@@ -6,6 +6,16 @@ const accountSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    pin:{
+        type: Number,
+        required: true,
+        default:0
+    },
+    isPinSet:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
     balance: {
         type: Number,
         required: true
