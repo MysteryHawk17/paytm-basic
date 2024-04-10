@@ -8,6 +8,7 @@ import { TransactionList } from "./Trasaction"
 import Profile from "./Profile"
 import AppBar from '../components/AppBar'
 import Loader from "../loader/Loader"
+import Features from "../components/Features"
 
 export const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -73,6 +74,8 @@ export const Dashboard = () => {
                     </div>
 
                     <Balance value={balance} sent={sent} received={received} added={added} />
+
+                    <Features />
 
                     {butValue == "History" ? <Users /> :
                         <TransactionList user={user} />}
